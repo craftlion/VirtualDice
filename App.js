@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import MainScreen from "./src/MainScreen/MainScreen";
+import SplashScreen from "./src/SplashScreen/SplashScreen";
+import { useFonts } from 'expo-font';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  const [loaded] = useFonts({
+    frankfrt: require('./assets/fonts/frankfrt.ttf'),
+    Kingthings_Organica: require('./assets/fonts/Kingthings_Organica.ttf'),
+    Luna: require('./assets/fonts/Luna.ttf'),
+    theboldfont: require('./assets/fonts/theboldfont.ttf'),
+
+  });
+  
+  if (!loaded) {
+    return <SplashScreen/>;
+  }
+
+  return <MainScreen/>;
+}
