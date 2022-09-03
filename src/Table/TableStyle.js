@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   diceZone: {
     flex: 9,
     flexDirection: "column",
+    padding:20
   }
 });
 

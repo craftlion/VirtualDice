@@ -68,9 +68,11 @@ export default class Table extends PureComponent {
 
         const listOfDice = new Array(nbDice);
 
+        const percentBasis = 100/nbDice + "%"
+
         for (let i = 0; i < nbDice; i++) {
 
-            const dice = <Dice face={this.dicesValue[indexLine * this.maxDicesNumberPerLines + i]}></Dice>
+            const dice = <View style={{flexBasis: percentBasis, marginHorizontal:4}}><Dice face={this.dicesValue[indexLine * this.maxDicesNumberPerLines + i]}></Dice></View>
 
 
             listOfDice[i] = dice;
@@ -81,8 +83,9 @@ export default class Table extends PureComponent {
                 style={{
                     flex: 1,
                     flexDirection: "row",
+                    justifyContent:"center",
                 }}>
-                {listOfDice.map((dice, index) => { return dice })}
+                {listOfDice.map((dice) => { return dice })}
 
             </View>
         )
@@ -141,8 +144,8 @@ export default class Table extends PureComponent {
                     {listOfLine.map((line, index) => { return line })}
                 </View>
 
-               
-                    <Scores savedScores={this.savedScores} ></Scores>
+
+                <Scores savedScores={this.savedScores} ></Scores>
 
 
             </View>
