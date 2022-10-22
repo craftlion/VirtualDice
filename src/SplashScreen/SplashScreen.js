@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Text, View } from "react-native";
+import { View } from "react-native";
 
 export default class SplashScreen extends Component {
   constructor(props) {
@@ -8,8 +8,12 @@ export default class SplashScreen extends Component {
 
   render() {
     return (
-      <View style={{flex:1, alignContent:"center"}}>
-        <Text>Hello Splash</Text>
+      <View style={{
+        flex: 1,
+        alignContent: "center",
+        backgroundColor: "#950000"
+      }}>
+
       </View>
     );
   }

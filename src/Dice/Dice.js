@@ -1,6 +1,4 @@
 import { Component } from "react";
-import styles from "./DiceStyle";
-
 import Dice0 from "../../assets/svg/Dice0SVG";
 import Dice1 from "../../assets/svg/Dice1SVG";
 import Dice2 from "../../assets/svg/Dice2SVG";

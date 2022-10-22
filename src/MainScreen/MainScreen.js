@@ -1,21 +1,75 @@
 import { View, Text, StatusBar, TouchableWithoutFeedback, Animated } from "react-native";
-import React, { Component, useState } from "react";
+import React, { Component, useState, useRef } from "react";
 import Table from "../Table/Table";
 import styles from "./MainScreenStyle";
 
 export default class MainScreen extends Component {
 
-  removeDice() {
+  constructor(props) {
+    super(props);
+
+    this.durationAnim = 80;
+    this.marginButton = 5;
+
+    this.state = {
+      marginBottomRemoveDiceButton: new Animated.Value(this.marginButton),
+      marginBottomAddDiceButton: new Animated.Value(this.marginButton),
+      marginBottomLaunchButton: new Animated.Value(this.marginButton)
+    };
+  }
+
+  removeDicePressIn() {
+
     this.table.removeDice();
+
+    Animated.sequence([
+      Animated.timing(this.state.marginBottomRemoveDiceButton, {
+        toValue: 0,
+        duration: this.durationAnim,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.marginBottomRemoveDiceButton, {
+        toValue: this.marginButton,
+        duration: this.durationAnim,
+        useNativeDriver: false,
+      })
+    ]).start();
   }
 
-  addDice() {
+  addDicePressIn() {
+
     this.table.addDice();
+
+    Animated.sequence([
+      Animated.timing(this.state.marginBottomAddDiceButton, {
+        toValue: 0,
+        duration: this.durationAnim,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.marginBottomAddDiceButton, {
+        toValue: this.marginButton,
+        duration: this.durationAnim,
+        useNativeDriver: false,
+      })
+    ]).start();
   }
 
-  launchDices() {
+  launchDicesPressIn() {
 
     this.table.launchDices();
+
+    Animated.sequence([
+      Animated.timing(this.state.marginBottomLaunchButton, {
+        toValue: 0,
+        duration: this.durationAnim,
+        useNativeDriver: false,
+      }),
+      Animated.timing(this.state.marginBottomLaunchButton, {
+        toValue: this.marginButton,
+        duration: this.durationAnim,
+        useNativeDriver: false,
+      })
+    ]).start();
   }
 
   render() {
@@ -24,7 +78,7 @@ export default class MainScreen extends Component {
       <View
         style={styles.container}
       >
-        <StatusBar barStyle="white-content" backgroundColor="#27476E" />
+        <StatusBar barStyle="dark-content" backgroundColor="#fb7600" />
         <View
           style={styles.titleZone}>
           <Text style={styles.title}>Virtual Dice</Text>
@@ -37,9 +91,9 @@ export default class MainScreen extends Component {
             styles.buttonsDiceZone
           }>
           <TouchableWithoutFeedback
-            onPress={this.removeDice.bind(this)}>
+            onPressIn={this.removeDicePressIn.bind(this)}>
             <View style={styles.buttonRemoveDice}>
-              <Animated.View style={styles.buttonRemoveDiceTop}>
+              <Animated.View style={[styles.buttonRemoveDiceTop, { marginBottom: this.state.marginBottomRemoveDiceButton }]}>
                 <Text style={
                   styles.textButtonRemoveDice
                 }>-</Text>
@@ -47,10 +101,10 @@ export default class MainScreen extends Component {
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={this.addDice.bind(this)}>
+            onPressIn={this.addDicePressIn.bind(this)}>
             <View style={styles.buttonAddDice}
             >
-              <Animated.View style={styles.buttonAddDiceTop}>
+              <Animated.View style={[styles.buttonAddDiceTop, { marginBottom: this.state.marginBottomAddDiceButton }]}>
                 <Text style={
                   styles.textButtonAddDice
                 }>+</Text>
@@ -60,12 +114,10 @@ export default class MainScreen extends Component {
         </View>
 
         <TouchableWithoutFeedback
-          onPress={this.launchDices.bind(this)}>
-          <View style={
-            styles.buttonLaunch
+          onPressIn={this.launchDicesPressIn.bind(this)}>
+          <View style={styles.buttonLaunch
           }>
-            <Animated.View style={styles.buttonLaunchTop}>
-
+            <Animated.View style={[styles.buttonLaunchTop, { marginBottom: this.state.marginBottomLaunchButton }]}>
               <Text style={
                 styles.textButtonLaunch
               }>LAUNCH</Text>

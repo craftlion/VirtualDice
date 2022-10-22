@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
 
   titleZone: {
-    backgroundColor: "#F0A202",
+    backgroundColor: "#fb7600",
     flex: 3,
     justifyContent: "center",
     borderBottomLeftRadius: 100,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   buttonAddDice: {
     flex: 1,
     borderRadius: 15,
-    backgroundColor:"#eaf2e3",
+    backgroundColor:"#fb7600",
     margin:5,
     marginRight:10,
   },
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: "center",
     borderRadius: 15,
-    backgroundColor: "#fffb46",
+    backgroundColor: "#fff07c",
     marginBottom:5,
   },
   textButtonAddDice: {
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   buttonRemoveDice: {
     flex: 1,
     borderRadius: 15,
-    backgroundColor:"#eaf2e3",
+    backgroundColor:"#fb7600",
     margin:5,
     marginLeft:10,
   },
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: "center",
     borderRadius: 15,
-    backgroundColor: "#fffb46",
+    backgroundColor: "#fff07c",
     marginBottom:5,
   },
   textButtonRemoveDice: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
 
   buttonLaunch: {
-    backgroundColor: "#fffb46",
+    backgroundColor: "#fff07c",
     flex: 5,
     borderRadius: 15,
     margin:10,
@@ -77,8 +77,7 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: "center",
     borderRadius: 15,
-    backgroundColor: "#ff9505",
-    marginBottom:5,
+    backgroundColor: "#fb7600"
   },
   textButtonLaunch: {
     fontFamily:"theboldfont",
