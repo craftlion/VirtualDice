@@ -10,15 +10,25 @@ const styles = StyleSheet.create({
   titleZone: {
     backgroundColor: "#fb7600",
     flex: 3,
-    justifyContent: "center",
+    flexDirection:"row",
     borderBottomLeftRadius: 100,
     borderBottomRightRadius: 100,
   },
   title: {
+    flex:1,
     fontFamily:"Luna",
     color: "black",
     fontSize: 25,
-    textAlign: "center"
+    textAlign: "center",
+  },
+
+  toolsIcon:{
+    marginRight:30,
+    marginLeft:-35,
+    height:"50%",
+    width:undefined,
+    aspectRatio:1,
+    alignSelf:"center"
   },
 
   buttonsDiceZone: {

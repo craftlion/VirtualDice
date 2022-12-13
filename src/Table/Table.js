@@ -1,155 +1,158 @@
 import { View } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { PureComponent } from "react";
+import React, { PureComponent, useRef } from "react";
 import Scores from "../Scores/Scores";
 import Dice from "../Dice/Dice";
 import styles from "./TableStyle";
-
+import Model from "../Model";
 
 export default class Table extends PureComponent {
+  maxDicesNumber = 9;
+  maxDicesNumberPerLines = 3;
 
-    maxDicesNumber = 9;
-    maxDicesNumberPerLines = 3;
+  dices = [new Dice(), new Dice(), new Dice(), new Dice(),
+    new Dice(), new Dice(), new Dice(), new Dice(), new Dice()];
 
-    nbDice = 1;
-    dicesValue = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  savedScores = [];
 
-    savedScores = [];
+  launchingInProgress = false;
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      nbDice : Model.nbDice
     }
-    async saveNumberOfDice() {
-        try {
-            const valueToSave = this.nbDice.toString();
-            await AsyncStorage.setItem('nbDice', valueToSave)
-        } catch (e) {
+  }
+  saveNumberOfDice() {
+    Model.saveNbDice(this.state.nbDice);
+  }
+
+  removeDice() {
+    if (this.state.nbDice > 1) {
+      this.setState({
+        nbDice: this.state.nbDice - 1
+      });
+
+      this.saveNumberOfDice();
+    }
+  }
+
+  addDice() {
+    if (this.state.nbDice < this.maxDicesNumber) {
+      this.setState({
+        nbDice: this.state.nbDice + 1
+      });
+
+      this.dices[this.state.nbDice].resetDefaultValue()
+
+      this.saveNumberOfDice();
+    }
+  }
+
+  async launchDices() {
+    if (!this.launchingInProgress) {
+
+      this.launchingInProgress = true
+
+      if (Model.animModeActive) {
+        const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+        for (var animLoop = 0; animLoop < 5; animLoop++) {
+          for (let i = 0; i < this.state.nbDice; i++) 
+          {
+            this.dices[i].randomValue()
+          }
+
+          this.forceUpdate();
+
+          await sleep(120);
         }
+      }
+
+      for (let i = 0; i < this.state.nbDice; i++) 
+      {
+        this.dices[i].randomValue()
+      }
+
+      const currentScore = this.dices.reduce(function (acc, val) {
+        return acc + val.getValue();
+      }, 0);
+
+      if (this.savedScores.length == 5) {
+        this.savedScores.shift();
+      }
+      this.savedScores.push(currentScore);
+
+      this.forceUpdate();
+
+      this.launchingInProgress = false
+    }
+  }
+
+  renderLineOfDice(indexLine, nbDice) {
+    const listOfDice = new Array(nbDice);
+
+    const percentBasis = 100 / nbDice + "%";
+
+    for (let i = 0; i < nbDice; i++) {
+
+      const dice = (
+        <View style={{ flexBasis: percentBasis, marginHorizontal: 4 }}>
+          {this.dices[i + indexLine * 3].render()}
+        </View>
+      );
+
+      listOfDice[i] = dice;
     }
 
-    removeDice() {
-        if (this.nbDice > 1) {
-            this.nbDice = this.nbDice - 1;
-            this.dicesValue[this.nbDice] = 0;
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        {listOfDice.map((dice) => {
+          return dice;
+        })}
+      </View>
+    );
+  }
 
-            this.saveNumberOfDice();
+  render() {
+    let nbLines = Math.trunc(this.state.nbDice / this.maxDicesNumberPerLines);
 
-            this.forceUpdate();
-        }
+    let nbDicesLastLine = this.state.nbDice - this.maxDicesNumberPerLines * nbLines;
+
+    if (nbDicesLastLine > 0) {
+      nbLines = nbLines + 1;
+    } else {
+      nbDicesLastLine = this.maxDicesNumberPerLines;
     }
 
-    addDice() {
-        if (this.nbDice < this.maxDicesNumber) {
-            this.nbDice = this.nbDice + 1;
+    const listOfLine = [nbLines];
 
-            this.saveNumberOfDice();
+    for (let i = 0; i < nbLines; i++) {
+      let nbDicesOfTheLine = this.maxDicesNumberPerLines;
 
-            this.forceUpdate();
-        }
+      if (i + 1 == nbLines) {
+        nbDicesOfTheLine = nbDicesLastLine;
+      }
+
+      listOfLine[i] = this.renderLineOfDice(i, nbDicesOfTheLine);
     }
 
-    launchDices() {
+    return (
+      <View style={styles.table}>
+        <View style={styles.diceZone}>
+          {listOfLine.map((line, index) => {
+            return line;
+          })}
+        </View>
 
-        for (var i = 0; i < this.nbDice; i++) {
-            this.dicesValue[i] = Math.floor(Math.random() * 6) + 1;
-        }
-
-        const currentScore = this.dicesValue.reduce(function (acc, val) { return acc + val; }, 0)
-
-        if (this.savedScores.length == 5) {
-            this.savedScores.shift();
-        }
-        this.savedScores.push(currentScore);
-
-        this.forceUpdate();
-    }
-
-    renderLineOfDice(indexLine, nbDice) {
-
-        const listOfDice = new Array(nbDice);
-
-        const percentBasis = 100/nbDice + "%"
-
-        for (let i = 0; i < nbDice; i++) {
-
-            const dice = <View style={{flexBasis: percentBasis, marginHorizontal:4}}><Dice face={this.dicesValue[indexLine * this.maxDicesNumberPerLines + i]}></Dice></View>
-
-
-            listOfDice[i] = dice;
-        }
-
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent:"center",
-                }}>
-                {listOfDice.map((dice) => { return dice })}
-
-            </View>
-        )
-
-    }
-
-    async componentDidMount() {
-        try {
-            const valueSaved = await AsyncStorage.getItem('nbDice');
-            if (valueSaved !== null) {
-                this.nbDice = Number.parseInt(valueSaved, 10);
-            }
-
-            this.forceUpdate();
-
-        } catch (e) {
-        }
-    }
-
-    render() {
-
-        let nbLines = Math.trunc(this.nbDice / this.maxDicesNumberPerLines);
-
-        let nbDicesLastLine = this.nbDice - this.maxDicesNumberPerLines * nbLines;
-
-        if (nbDicesLastLine > 0) {
-            nbLines = nbLines + 1;
-        } else {
-            nbDicesLastLine = this.maxDicesNumberPerLines;
-        }
-
-        const listOfLine = [nbLines];
-
-        for (let i = 0; i < nbLines; i++) {
-
-            let nbDicesOfTheLine = this.maxDicesNumberPerLines;
-
-            if (i + 1 == nbLines) {
-                nbDicesOfTheLine = nbDicesLastLine
-            }
-
-            listOfLine[i] = this.renderLineOfDice(i, nbDicesOfTheLine);
-
-        }
-
-        return (
-            <View
-                style={
-                    styles.table
-                }>
-
-                <View
-                    style={
-                        styles.diceZone
-                    }>
-                    {listOfLine.map((line, index) => { return line })}
-                </View>
-
-
-                <Scores savedScores={this.savedScores} ></Scores>
-
-
-            </View>
-
-        );
-    }
+        <Scores savedScores={this.savedScores}></Scores>
+      </View>
+    );
+  }
 }

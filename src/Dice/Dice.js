@@ -8,24 +8,34 @@ import Dice5 from "../../assets/svg/Dice5SVG";
 import Dice6 from "../../assets/svg/Dice6SVG";
 
 export default class Dice extends Component {
+  static diceSVG = [
+    <Dice0 />,
+    <Dice1 />,
+    <Dice2 />,
+    <Dice3 />,
+    <Dice4 />,
+    <Dice5 />,
+    <Dice6 />,
+  ];
 
-    static diceSVG = [
-        <Dice0 />,
-        <Dice1 />,
-        <Dice2 />,
-        <Dice3 />,
-        <Dice4 />,
-        <Dice5 />,
-        <Dice6 />
-    ]
+  constructor(props) {
+    super(props);
+    this.value = 0;
+  }
 
-    constructor(props) {
-        super(props);
-    }
+  getValue(){
+    return this.value;
+  }
 
-    render() {
-        return (
-            Dice.diceSVG[this.props.face]
-        );
-    }
+  randomValue(){
+    this.value = Math.floor(Math.random() * 6) + 1;
+  }
+
+  resetDefaultValue(){
+    this.value = 0
+  }
+
+  render() {
+    return Dice.diceSVG[this.value];
+  }
 }
