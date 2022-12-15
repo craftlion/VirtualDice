@@ -23,16 +23,18 @@ export default class Dice extends Component {
     this.value = 0;
   }
 
-  getValue(){
+  getValue() {
     return this.value;
   }
 
-  randomValue(){
+  randomValue() {
     this.value = Math.floor(Math.random() * 6) + 1;
+
+    return this.value;
   }
 
-  resetDefaultValue(){
-    this.value = 0
+  resetDefaultValue() {
+    this.value = 0;
   }
 
   render() {

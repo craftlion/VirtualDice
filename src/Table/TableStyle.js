@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   table: {
@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
   diceZone: {
     flex: 9,
     flexDirection: "column",
-    padding:20
-  }
+    padding: 20,
+  },
 });
 
 export default styles;

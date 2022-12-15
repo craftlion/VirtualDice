@@ -4,8 +4,7 @@ import { useFonts } from "expo-font";
 import Model from "./src/Model";
 
 export default function App() {
-
-  loadStorage = Model.extractValueFromStorage()
+  loadStorage = Model.extractValueFromStorage();
 
   const [loadedFont] = useFonts({
     Kingthings_Organica: require("./assets/fonts/Kingthings_Organica.ttf"),
@@ -13,10 +12,9 @@ export default function App() {
     theboldfont: require("./assets/fonts/theboldfont.ttf"),
   });
 
-  if (loadedFont && loadStorage ) { 
-     return <MainScreen />;
+  if (loadedFont && loadStorage) {
+    return <MainScreen />;
   }
-  
-  return <SplashScreen />;
 
+  return <SplashScreen />;
 }

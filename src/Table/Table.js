@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Vibration, View } from "react-native";
 import React, { PureComponent, useRef } from "react";
 import Scores from "../Scores/Scores";
 import Dice from "../Dice/Dice";
@@ -9,8 +9,17 @@ export default class Table extends PureComponent {
   maxDicesNumber = 9;
   maxDicesNumberPerLines = 3;
 
-  dices = [new Dice(), new Dice(), new Dice(), new Dice(),
-    new Dice(), new Dice(), new Dice(), new Dice(), new Dice()];
+  dices = [
+    new Dice(),
+    new Dice(),
+    new Dice(),
+    new Dice(),
+    new Dice(),
+    new Dice(),
+    new Dice(),
+    new Dice(),
+    new Dice(),
+  ];
 
   savedScores = [];
 
@@ -20,72 +29,66 @@ export default class Table extends PureComponent {
     super(props);
 
     this.state = {
-      nbDice : Model.nbDice
-    }
-  }
-  saveNumberOfDice() {
-    Model.saveNbDice(this.state.nbDice);
+      nbDice: Model.nbDice,
+    };
   }
 
   removeDice() {
     if (this.state.nbDice > 1) {
-      this.setState({
-        nbDice: this.state.nbDice - 1
-      });
-
-      this.saveNumberOfDice();
+      Model.saveNbDice(this.state.nbDice - 1),
+        this.setState({
+          nbDice: this.state.nbDice - 1,
+        });
     }
   }
 
   addDice() {
     if (this.state.nbDice < this.maxDicesNumber) {
+      Model.saveNbDice(this.state.nbDice + 1),
+        this.dices[this.state.nbDice].resetDefaultValue();
+
       this.setState({
-        nbDice: this.state.nbDice + 1
+        nbDice: this.state.nbDice + 1,
       });
-
-      this.dices[this.state.nbDice].resetDefaultValue()
-
-      this.saveNumberOfDice();
     }
   }
 
   async launchDices() {
     if (!this.launchingInProgress) {
-
-      this.launchingInProgress = true
+      this.launchingInProgress = true;
 
       if (Model.animModeActive) {
         const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
         for (var animLoop = 0; animLoop < 5; animLoop++) {
-          for (let i = 0; i < this.state.nbDice; i++) 
-          {
-            this.dices[i].randomValue()
+          for (let i = 0; i < this.state.nbDice; i++) {
+            this.dices[i].randomValue();
           }
 
           this.forceUpdate();
 
-          await sleep(120);
+          await sleep(250);
         }
       }
 
-      for (let i = 0; i < this.state.nbDice; i++) 
-      {
-        this.dices[i].randomValue()
-      }
+      var currentScore = 0;
 
-      const currentScore = this.dices.reduce(function (acc, val) {
-        return acc + val.getValue();
-      }, 0);
+      for (let i = 0; i < this.state.nbDice; i++) {
+        currentScore += this.dices[i].randomValue();
+      }
 
       if (this.savedScores.length == 5) {
         this.savedScores.shift();
       }
       this.savedScores.push(currentScore);
 
+      if (Model.vibrationActive) {
+        Vibration.vibrate();
+      }
+
       this.forceUpdate();
 
-      this.launchingInProgress = false
+      this.launchingInProgress = false;
     }
   }
 
@@ -95,7 +98,6 @@ export default class Table extends PureComponent {
     const percentBasis = 100 / nbDice + "%";
 
     for (let i = 0; i < nbDice; i++) {
-
       const dice = (
         <View style={{ flexBasis: percentBasis, marginHorizontal: 4 }}>
           {this.dices[i + indexLine * 3].render()}
@@ -123,7 +125,8 @@ export default class Table extends PureComponent {
   render() {
     let nbLines = Math.trunc(this.state.nbDice / this.maxDicesNumberPerLines);
 
-    let nbDicesLastLine = this.state.nbDice - this.maxDicesNumberPerLines * nbLines;
+    let nbDicesLastLine =
+      this.state.nbDice - this.maxDicesNumberPerLines * nbLines;
 
     if (nbDicesLastLine > 0) {
       nbLines = nbLines + 1;

@@ -4,7 +4,8 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Animated,
-  Image} from "react-native";
+  Image,
+} from "react-native";
 import React, { Component } from "react";
 import Table from "../Table/Table";
 import styles from "./MainScreenStyle";
@@ -26,7 +27,7 @@ export default class MainScreen extends Component {
       marginBottomRemoveDiceButton: new Animated.Value(this.marginButton),
       marginBottomAddDiceButton: new Animated.Value(this.marginButton),
       marginBottomLaunchButton: new Animated.Value(this.marginButton),
-      settingMenuVisible : false,
+      settingMenuVisible: false,
     };
   }
 
@@ -37,7 +38,9 @@ export default class MainScreen extends Component {
         await this.sound.unloadAsync();
       }
 
-      const { sound } = await Audio.Sound.createAsync(require("../../assets/sound/diceRoll.mp3"));
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../assets/sound/diceRoll.mp3")
+      );
       this.sound = sound;
 
       await this.sound.playAsync();
@@ -46,10 +49,10 @@ export default class MainScreen extends Component {
     }
   }
 
-  openToolsMenu(){
+  openToolsMenu() {
     this.setState({
-      settingMenuVisible : !this.state.settingMenuVisible
-    })
+      settingMenuVisible: !this.state.settingMenuVisible,
+    });
   }
 
   removeDicePressIn() {
@@ -108,18 +111,17 @@ export default class MainScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-
-    <View>
-      {this.state.settingMenuVisible ? <SettingMenu parent={this}></SettingMenu> : <View></View>}
-    </View>
-      
-
+        <View>
+          {this.state.settingMenuVisible ? (
+            <SettingMenu parent={this}></SettingMenu>
+          ) : (
+            <View></View>
+          )}
+        </View>
         <StatusBar barStyle="dark-content" backgroundColor="#fb7600" />
         <View style={styles.titleZone}>
-          <Text style={styles.title}>Virtual Dice</Text>
-          <TouchableWithoutFeedback
-            onPressIn={this.openToolsMenu.bind(this)}
-          >
+          <Text style={styles.title}>Roll the Dice !</Text>
+          <TouchableWithoutFeedback onPressIn={this.openToolsMenu.bind(this)}>
             <Image
               style={styles.toolsIcon}
               source={require("../../assets/setting.png")}

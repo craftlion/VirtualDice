@@ -12,14 +12,13 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.17.3",
     "expo": "^45.0.0",
+    "expo-av": "~11.2.3",
     "expo-font": "~10.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
     "react-native-svg": "12.3.0",
-    "react-native-web": "0.17.7",
-    "resolve": "^1.22.1",
-    "expo-av": "~11.2.3"
+    "resolve": "^1.22.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
