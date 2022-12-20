@@ -1,15 +1,16 @@
 {
   "expo": {
-    "slug": "virtualdice",
+    "slug": "VirtualDice",
     "name": "virtualdice",
     "sdkVersion": "45.0.0",
     "extra": {
       "eas": {
-        "projectId": "b93e4643-5cc1-46aa-8c27-35cce8c21153"
+        "projectId": "dc96bff7-311a-4ac4-8fef-44a029d6351a"
       }
     },
     "android": {
-      "package": "com.killroy.virtualdice"
+      "versionCode": 2,
+      "package": "virtualdice.apk"
     }
   },
   "name": "virtualdice"
