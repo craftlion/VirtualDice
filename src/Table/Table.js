@@ -67,7 +67,7 @@ export default class Table extends PureComponent {
 
           this.forceUpdate();
 
-          await sleep(250);
+          await sleep(30);
         }
       }
 
